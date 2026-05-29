@@ -1759,3 +1759,237 @@ If you switch it to **React**, Vercel will treat it like a static SPA, skip the 
 Also add your env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) in the new project before deploying.
 
 **Bottom line:** TanStack Start is correct because the app is React + SSR + server routing — not a simple static React site.
+
+---
+
+_**User**_
+
+ok so well i redeployed it with a fresh repo. the build was successful but the still same issue when i popen the vercel site 
+
+404: NOT_FOUND
+Code: NOT_FOUND
+ID: lhr1::9vnh5-1780095561873-df5cbd27cad1
+
+---
+
+_**Agent (composer-2.5)**_
+
+<think><details><summary>Thought Process</summary>
+The 404 NOT_FOUND error persists after redeploying with a fresh Vercel project.</details></think>
+
+_**Agent (composer-2.5)**_
+
+Investigating the deployment setup and build output — the 404 likely means Vercel still isn't serving the Nitro server bundle correctly.
+
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd /Users/benjamin/Documents/FlowBudget && git status && git log -3 --oneline && git diff HEAD</summary>
+
+```bash
+cd /Users/benjamin/Documents/FlowBudget && git status && git log -3 --oneline && git diff HEAD
+```
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+fd3c08c Merge branch 'main' of https://github.com/mccauleyo/FlowBudget
+13e1548 chat update
+1f25152 jk.j.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/benjamin/Documents/FlowBudget/vite.config.ts</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/benjamin/Documents/FlowBudget/vercel.json</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: /Users/benjamin/Documents/FlowBudget/src/routes/index.tsx</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<think><details><summary>Thought Process</summary>
+The vercel.json file was reverted. It now uses `outputDirectory: dist` without `framework: null`.</details></think>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd /Users/benjamin/Documents/FlowBudget && rm -rf dist && npm run build 2>&1 | tail -30</summary>
+
+```bash
+cd /Users/benjamin/Documents/FlowBudget && rm -rf dist && npm run build 2>&1 | tail -30
+```
+
+```
+dist/server/_libs/h3.mjs                                             14.32 kB
+dist/server/_libs/lucide-react.mjs                                   15.24 kB
+dist/server/_libs/iceberg-js.mjs                                     15.70 kB
+dist/server/_ssr/router-C3ttwIIs.mjs                                 18.50 kB
+dist/server/_ssr/use-budget-ui-HeP_ZNeK.mjs                          19.27 kB
+dist/server/_libs/radix-ui__react-tooltip.mjs                        19.74 kB
+dist/server/_libs/react.mjs                                          19.93 kB
+dist/server/_libs/floating-ui__dom.mjs                               21.28 kB
+dist/server/_libs/floating-ui__core.mjs                              24.06 kB
+dist/server/_app-DQZI7LKg.mjs                                        25.32 kB
+dist/server/_ssr/dashboard-CIG5lTGg.mjs                              28.13 kB
+dist/server/_libs/supabase__supabase-js.mjs                          30.94 kB
+dist/server/_libs/tanstack__react-router.mjs                         42.51 kB
+dist/server/_libs/seroval.mjs                                        48.40 kB
+dist/server/_libs/supabase__phoenix.mjs                              53.95 kB
+dist/server/_libs/tanstack__query-core.mjs                           54.77 kB
+dist/server/_libs/sonner.mjs                                         56.10 kB
+dist/server/_ssr/server-CeAXpJal.mjs                                 57.94 kB
+dist/server/_libs/supabase__realtime-js.mjs                          73.03 kB
+dist/server/_libs/supabase__storage-js.mjs                           97.37 kB
+dist/server/_libs/tailwind-merge.mjs                                 99.21 kB
+dist/server/_libs/supabase__postgrest-js.mjs                        132.72 kB
+dist/server/_libs/tanstack__router-core.mjs                         171.44 kB
+dist/server/_libs/supabase__auth-js.mjs                             298.58 kB
+dist/server/_libs/react-dom.mjs                                     509.17 kB
+✓ built in 1.64s
+ℹ Generated dist/nitro.json
+
+[nitro] ✔ You can preview this build using npx vite preview
+[nitro] ✔ You can deploy this build using npx nitro deploy --prebuilt
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "/Users/benjamin/Documents/FlowBudget",
+  "pattern": "vercel|outputDirectory|framework"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "/Users/benjamin/Documents/FlowBudget",
+  "pattern": "vercel|outputDirectory|framework",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "./vercel.json"
+    },
+    {
+      "matchCount": 1,
+      "uri": "./package.json"
+    },
+    {
+      "matchCount": 57,
+      "uri": "./.specstory/history/2026-05-29_22-36-57Z-vercel-deployment-not-found-error.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "./vite.config.ts"
+    },
+    {
+      "matchCount": 10,
+      "uri": "./package-lock.json"
+    },
+    {
+      "matchCount": 3,
+      "uri": "./bun.lock"
+    }
+  ],
+  "totalFiles": 6,
+  "totalMatches": 73
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: find /Users/benjamin/Documents/FlowBudget/dist -maxdepth 3 -type f | head -50 && echo "---" && cat /Users/benjamin/Documents/FlowBudget/dist/config.json</summary>
+
+```bash
+find /Users/benjamin/Documents/FlowBudget/dist -maxdepth 3 -type f | head -50 && echo "---" && cat /Users/benjamin/Documents/FlowBudget/dist/config.json
+```
+
+```
+find: /Users/benjamin/Documents/FlowBudget/dist: No such file or directory
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (composer-2.5)**_
+
+<think><details><summary>Thought Process</summary>
+The package.json file appears to have changed unexpectedly.</details></think>

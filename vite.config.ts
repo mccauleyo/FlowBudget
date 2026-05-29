@@ -8,7 +8,16 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   // Required for self-hosted deploys (Vercel, etc.) — Nitro is skipped outside Lovable by default.
-  nitro: { preset: "vercel" },
+  // Lovable defaults put the server in dist/server, but Vercel's Build Output API expects
+  // .vercel/output/functions/__server.func (config.json routes to /__server).
+  nitro: {
+    preset: "vercel",
+    output: {
+      dir: ".vercel/output",
+      serverDir: ".vercel/output/functions/__server.func",
+      publicDir: ".vercel/output/static",
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
